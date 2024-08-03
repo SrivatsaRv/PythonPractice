@@ -32,7 +32,7 @@ def input_user_guess():
     guess = ''
     while guess not in ['1','2','3','4']:
         guess = input('Enter your guess index: ')
-        return int(guess)   
+    return int(guess)   
         
 
 # #Create the function that checks the user guess
