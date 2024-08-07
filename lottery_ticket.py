@@ -19,21 +19,33 @@ Date - 3rd August 2023
 from random import shuffle
 
 
-real_list = ['','','O','','']    #A hard-coded list initalized , to show initial placement of lottery ticket
+#A hard-coded list initalized , to show initial placement of lottery ticket
+real_list = ['','','O','','']    
 
 #Create a function that shuffles the real_list and returns the mixed_list 
-def mix_the_list(real_list):
-    shuffled_list = real_list.copy()  #Doing this to avoid the Shuffle types None Return,  now we get Class List return
-    shuffle(shuffled_list)
-    return shuffled_list   #At this point , the lottery ticket has moved to a random index in the list
+#Doing this to avoid the Shuffle types None Return,  now we get Class List return
 
-#Create the function that takes the user guess 
+def mix_the_list(real_list):
+    shuffled_list = real_list.copy()  
+    shuffle(shuffled_list)
+    return shuffled_list  
+
 def input_user_guess():
+    # List of valid guesses
+    valid_guesses = ['1', '2', '3', '4']
     guess = ''
-    while guess not in ['1','2','3','4']:
-        guess = input('Enter your guess index: ')
-    return int(guess)   
-        
+
+    while True:
+        # Prompt user to input a guess
+        guess = input("Enter your guess between 1-4  \n(or type 'exit' to quit): ")
+        if guess == 'exit':
+            print("Exiting the program. Goodbye!")
+            return 'exit'
+        elif guess in valid_guesses:
+            print(f"Your guess is: {guess} , verifying now....")
+            return int(guess) - 1  # Adjust for 0-based index
+        else:
+            print("Index out of bounds. Please try again with a number between 1-4")
 
 # #Create the function that checks the user guess
 def validate_user_guess(mixed_list_result, guess_index):
@@ -42,20 +54,32 @@ def validate_user_guess(mixed_list_result, guess_index):
     else:
         for i in range(len(mixed_list_result)):
             if mixed_list_result[i] == 'O':
-                print('Incorrect Guess, here is where the O was located in the following position\n', i,'\n',mixed_list_result ) 
+                print('Incorrect Guess, here is where the O was located in the following position\n', i+1,'\n',mixed_list_result ) 
 
 
-#Welcome and mix the list
-print('\nWelcome to the Lottery ticket game, we have a list here:', real_list,'\n') 
-mixed_list_result = mix_the_list(real_list)
 
-#Game is on, take user input
-print('This has now been shuffled! You have to now guess which index position does the O lottery ticket sits in!\n')
-guess_index = input_user_guess()
+## MAIN SECTION - FUNCTIONS ARE BEING CALLED HERE!
 
-#User has guessed,  now validate the input
+while True:
+    # Welcome and mix the list
+    print('\nWelcome to the Lottery ticket game, we have a list here:\n', real_list, '\n')
+    mixed_list_result = mix_the_list(real_list)
 
-validate_user_guess(mixed_list_result, guess_index)
+    # Game is on, take user input
+    print('This has now been shuffled! You have to now guess which index position does the O lottery ticket sits in!\n')
+    guess_index = input_user_guess()
+    
+    if guess_index == 'exit':
+        break
+
+    # User has guessed, now validate the input
+    validate_user_guess(mixed_list_result, guess_index)
+
+    # Ask the user if they want to play again
+    play_again = input("Do you want to play again? (yes/no): ").strip().lower()
+    if play_again != 'yes':
+        print("Thank you for playing! Goodbye!")
+        break
 
 
 #DEBUG Statements 
